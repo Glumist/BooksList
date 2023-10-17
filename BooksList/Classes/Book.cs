@@ -402,7 +402,7 @@ namespace BooksList.Classes
             };
         }
 
-        public List<Book> GetNextBooksInBundle(Bundle bundle)
+        public List<Book> GetNextBooksInBundle(Bundle bundle, bool haveCheck)
         {
             List<Bundle.BundleBook> bundleBooks = GetBundleBooks(bundle);
             List<Book> result = new List<Book>();
@@ -410,18 +410,20 @@ namespace BooksList.Classes
                 if (bundleBook.Book.Status != Book.BookStatus.Completed &&
                     bundleBook.Book.Status != Book.BookStatus.Dropped &&
                     bundleBook.Book.Status != Book.BookStatus.Skipped &&
+                    bundleBook.Book.Status != Book.BookStatus.Listened &&
                     bundleBook.Book.Status != Book.BookStatus.WaitTranslation)
-                {
-                    result.Add(bundleBook.Book);
-                    break;
-                }
+                    if (!haveCheck || bundleBook.Book.Have)
+                    {
+                        result.Add(bundleBook.Book);
+                        break;
+                    }
             return result;
         }
 
-        public bool IsBookNext(Book game)
+        public bool IsBookNext(Book book, bool haveCheck)
         {
-            foreach (Book.BookBundle bundle in game.Bundles)
-                if (!GetNextBooksInBundle(bundle.Bundle).Contains(game))
+            foreach (Book.BookBundle bundle in book.Bundles)
+                if (!GetNextBooksInBundle(bundle.Bundle, haveCheck).Contains(book))
                     return false;
             return true;
         }

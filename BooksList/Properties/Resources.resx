@@ -127,6 +127,9 @@
   <data name="IconFilter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconFilter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IconSave" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconSave.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="IconDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconDown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -151,7 +154,7 @@
   <data name="IconUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\IconUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="IconSave" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\IconSave.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconBookshelf" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IconBookshelf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

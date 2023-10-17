@@ -225,7 +225,7 @@ namespace BooksList.Forms
                 return result;
 
             if (bundle.Name == BUNDLE_SUM)
-                result = GetSumBundleBooks();
+                result = GetSumBundleBooks(false);
             else if (bundle.Name == BUNDLE_NONE)
                 result = BooksCollection.GetInstance().Books.FindAll(g => g.Bundles.Count == 0);
             else if (bundle.Name == BUNDLE_ALL)
@@ -447,21 +447,21 @@ namespace BooksList.Forms
         {
             List<Book> result = new List<Book>();
 
+            string filter = tstbFilter.Text.ToLower();
+
             foreach (Book book in books)
             {
                 if (tsbBookStarted.Checked && !(book.Started && book.Have))
                     continue;
 
-                if (tstbFilter.Text.Trim() != "" && !book.ToString().ToLower().Contains(tstbFilter.Text.ToLower()))
+                if (filter.Trim() != "" && !book.ToString().ToLower().Contains(filter))
                     continue;
 
-                if (tsbBuyList.Checked)
-                {
-                    if (!_booksCollection.IsBookNext(book))
-                        continue;
-                    if (book.Have)
-                        continue;
-                }
+                if (tsbDownloadList.Checked && book.Have)
+                    continue;
+
+                if (tsbDownloaded.Checked && !book.Have)
+                    continue;                
 
                 result.Add(book);
             }
@@ -481,12 +481,13 @@ namespace BooksList.Forms
             else if (bundle.Name == BUNDLE_ALL)
                 dgvBooks.DataSource = GetFilteredList(_booksCollection.Books);
             else if (bundle.Name == BUNDLE_SUM)
-                dgvBooks.DataSource = GetFilteredList(GetSumBundleBooks());
+                dgvBooks.DataSource = GetFilteredList(GetSumBundleBooks(tsbDownloaded.Checked));
             else
             {
-                dgvBooks.DataSource = _booksCollection.GetBundleBooks(bundle).FindAll(g => 
+                dgvBooks.DataSource = BooksCollection.GetInstance().GetBundleBooks(bundle).FindAll(g => 
                     (!tsbBookStarted.Checked || (g.Book.Started && g.Have)) &&
-                    (!tsbBuyList.Checked || !g.Have) &&
+                    (!tsbDownloadList.Checked || !g.Have) &&
+                    (!tsbDownloaded.Checked || g.Have) &&
                     (tstbFilter.Text.Trim() == "" || g.Book.ToString().ToLower().Contains(tstbFilter.Text.ToLower()))
                 );
                 colBookNumber.Visible = true;
@@ -497,7 +498,7 @@ namespace BooksList.Forms
             }
         }
 
-        private static List<Book> GetSumBundleBooks()
+        private static List<Book> GetSumBundleBooks(bool haveCheck)
         {
             List<Book> result = new List<Book>();
             foreach (Book book in BooksCollection.GetInstance().Books)
@@ -516,7 +517,7 @@ namespace BooksList.Forms
                     continue;
                 }
 
-                if (BooksCollection.GetInstance().IsBookNext(book))
+                if (BooksCollection.GetInstance().IsBookNext(book, haveCheck))
                     result.Add(book);
             }
             return result;
@@ -672,7 +673,12 @@ namespace BooksList.Forms
             RefreshBooksTable();
         }
 
-        private void tsbBuyList_CheckedChanged(object sender, EventArgs e)
+        private void tsbDownloadList_CheckedChanged(object sender, EventArgs e)
+        {
+            RefreshBooksTable();
+        }
+
+        private void tsbDownloaded_CheckedChanged(object sender, EventArgs e)
         {
             RefreshBooksTable();
         }
